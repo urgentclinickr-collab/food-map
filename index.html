@@ -98,7 +98,8 @@ section { margin-top: 26px; }
 .map:hover { text-decoration: underline; }
 
 /* 지도 */
-.mapbox { margin-top: 18px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+.mapsec { margin-top: 32px; }
+.mapbox { margin-top: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
 #map { height: 380px; width: 100%; background: #e8ece9; }
 .maplegend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 12px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
 .maplegend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -2px; margin-right: 4px; }
@@ -139,15 +140,18 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
 </div>
 
 <main class="wrap">
-  <div class="mapbox">
-    <div id="map" role="region" aria-label="맛집 위치 지도"></div>
-    <div class="maplegend"><span><i style="background:#f3b33d;border:2px solid #2a1f05"></i>어전트의원</span><span><i style="background:#0d7356"></i>강추</span><span><i style="background:#fff;border:2px solid #0d7356"></i>추천</span><span><i style="background:#fff;border:2px solid #8a958f"></i>기타</span><span>핀 번호 = 목록 번호</span></div>
-  </div>
   <div class="pick">
     <p>메뉴가 고민될 땐 <strong id="pickName">한 곳 골라 드릴게요</strong></p>
     <button class="btn" id="pickBtn" type="button">오늘 뭐 먹지?</button>
   </div>
   <div id="groups"></div>
+  <section class="mapsec" id="map-section">
+    <div class="ghead"><h2>지도로 보기</h2><small>핀을 누르면 식당 정보가 나와요</small></div>
+    <div class="mapbox">
+      <div id="map" role="region" aria-label="맛집 위치 지도"></div>
+      <div class="maplegend"><span><i style="background:#f3b33d;border:2px solid #2a1f05"></i>어전트의원</span><span><i style="background:#0d7356"></i>강추</span><span><i style="background:#fff;border:2px solid #0d7356"></i>추천</span><span><i style="background:#fff;border:2px solid #8a958f"></i>기타</span><span>핀 번호 = 목록 번호</span></div>
+    </div>
+  </section>
   <footer>번호는 인쇄용 안내지와 같아요. 브레이크타임 시간과 휴무일은 지도 링크에서 확인해 주세요.</footer>
 </main>
 
