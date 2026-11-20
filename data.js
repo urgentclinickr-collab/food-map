@@ -4,7 +4,7 @@ window.CLINIC = {
   name: "어전트의원",
   address: "서울 영등포구 국회대로54길 10 아크로타워스퀘어 상가 13동 304호",
   mapQuery: "어전트의원 영등포",
-  lat: 37.52426, lng: 126.90648
+  lat: 37.52293, lng: 126.90609
 };
 
 // 거리 그룹
@@ -23,14 +23,14 @@ window.GROUPS = [
 // lat, lng: 지도 핀 위치 (카카오맵 위치 기준으로 계산한 값)
 // query: 네이버지도에서 찾을 때 쓰는 이름 (실제 가게 이름이 다를 때)
 window.PLACES = [
-  { name: "어메이징키친",     group: "same", cat: "한식뷔페", meal: "lunch", bt: true,  tags: ["추천", "푸짐해요", "가성비"], menu: [], memo: "같은 건물 지하 1층, 빠르고 간단한 식사 가능함. 라면, 계란후라이 셀프바", query: "어메이징키친 아크로타워스퀘어", lat: 37.52418, lng: 126.90640 },
-  { name: "팡앤팡",           group: "same", cat: "빵",       meal: "both",  bt: false, tags: ["강추"], menu: [], memo: "빵 맛집. 모든 빵이 맛있어요.", query: "팡앤팡 아크로타워스퀘어", lat: 37.52434, lng: 126.90656 },
+  { name: "어메이징키친",     group: "same", cat: "한식뷔페", meal: "lunch", bt: true,  tags: ["추천", "푸짐해요", "가성비"], menu: [], memo: "같은 건물 지하 1층, 빠르고 간단한 식사 가능함. 라면, 계란후라이 셀프바", query: "어메이징키친 아크로타워스퀘어", lat: 37.52284, lng: 126.90597 },
+  { name: "팡앤팡",           group: "same", cat: "빵",       meal: "both",  bt: false, tags: ["강추"], menu: [], memo: "빵 맛집. 모든 빵이 맛있어요.", query: "팡앤팡 아크로타워스퀘어", lat: 37.52302, lng: 126.90622 },
   { name: "일출옥",           group: "near", cat: "한식",     meal: "both",  bt: true,  tags: ["추천", "정갈해요"], menu: ["콩나물국밥", "아보카도명란비빔밥", "굴국밥"], memo: "콩나물국밥, 아보카도 명란 비빔밥, 갈치속젓, 명란 토핑 추천", query: "일출옥 영등포점", lat: 37.52356, lng: 126.90561 },
   { name: "구름추어탕",       group: "near", franchise: true, cat: "한식", meal: "both", bt: false, tags: ["추천", "푸짐해요", "가성비"], menu: ["추어탕", "뚝배기불고기"], memo: "체인점이지만 맛있어요. 추어탕, 뚝배기불고기", query: "구름산추어탕 영등포점", lat: 37.52350, lng: 126.90576 },
   { name: "김재운초밥사랑",   group: "near", cat: "일식",     meal: "both",  bt: false, tags: ["추천", "푸짐해요", "가성비"], menu: ["런치세트", "초밥세트"], memo: "런치세트 가성비에요. 초밥세트에도 우동이 나와요", query: "김재운초밥사랑 영등포직영점", lat: 37.52338, lng: 126.90576 },
   { name: "돼슐랭",           group: "near", cat: "한식",     meal: "both",  bt: true,  tags: ["추천", "푸짐해요", "가성비"], menu: ["김치찌개"], memo: "점심에만 파는 김치찌개 괜찮아요.", query: "돼슐랭 영등포시장역점", lat: 37.52332, lng: 126.90561 },
-  { name: "호미가",           group: "near", cat: "아시안",   meal: "both",  bt: true, tags: ["강추", "푸짐해요", "가성비"], menu: ["팟타이", "볶음밥", "꿔바로우", "짜죠"], memo: "동남아 맛집. 꼭 팟타이와 볶음밥을 드세요. 꿔바로우와 짜죠도 괜찮아요.", query: "호미가 영등포", lat: 37.52405, lng: 126.90610 },
-  { name: "고향엄마손생바지락칼국수", group: "near", franchise: true, cat: "한식", meal: "both", bt: true, tags: ["추천", "푸짐해요", "가성비"], menu: ["바지락칼국수", "꼬막비빔밥"], memo: "체인점이지만 바지락칼국수와 꼬막비빔밥은 일품이에요.", query: "고향엄마손생바지락칼국수 서울영등포점", lat: 37.52395, lng: 126.90585 },
+  { name: "호미가",           group: "near", cat: "아시안",   meal: "both",  bt: true, tags: ["강추", "푸짐해요", "가성비"], menu: ["팟타이", "볶음밥", "꿔바로우", "짜죠"], memo: "동남아 맛집. 꼭 팟타이와 볶음밥을 드세요. 꿔바로우와 짜죠도 괜찮아요.", query: "호미가 영등포", lat: 37.52388, lng: 126.90618 },
+  { name: "고향엄마손생바지락칼국수", group: "near", franchise: true, cat: "한식", meal: "both", bt: true, tags: ["추천", "푸짐해요", "가성비"], menu: ["바지락칼국수", "꼬막비빔밥"], memo: "체인점이지만 바지락칼국수와 꼬막비빔밥은 일품이에요.", query: "고향엄마손생바지락칼국수 서울영등포점", lat: 37.52379, lng: 126.90670 },
   { name: "란궁마라",         group: "near", cat: "중식",     meal: "both",  bt: false, tags: ["추천", "가성비"], menu: ["마라탕", "마라샹궈"], memo: "마라탕 좋아하시면 맛집입니다.", query: "란궁마라탕 영등포점", lat: 37.52338, lng: 126.90546 },
   { name: "영등포장어",       group: "near", cat: "한식",     meal: "both",  bt: false, tags: ["강추", "정갈해요", "푸짐해요", "가성비"], menu: ["민물장어정식", "소갈비살정식"], memo: "점심정식 추천해요. 민물 장어인데 흙냄새 안나요. 소갈비살 정식도 괜찮습니다. (2만원)", query: "영등포장어", lat: 37.52453, lng: 126.90789 },
   { name: "본죽 / 도시락",    group: "near", franchise: true, cat: "죽·도시락", meal: "both", bt: false, tags: ["정갈해요", "푸짐해요", "가성비"], menu: [], memo: "죽은 전국 어디서나 같은 맛을 유지하는 곳", query: "본죽&비빔밥cafe 영등포시장역점", lat: 37.52350, lng: 126.90546 },
