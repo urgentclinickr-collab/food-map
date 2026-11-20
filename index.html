@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 /* Layout: 한 줄 세로 리스트(식권 모양 카드) + 상단 고정 필터. 거리 그룹 순서로 번호가 이어짐 */
 :root {
@@ -96,6 +97,22 @@ section { margin-top: 26px; }
 .map { justify-self: start; font-size: 13px; font-weight: 700; color: var(--accent); text-decoration: none; }
 .map:hover { text-decoration: underline; }
 
+/* 지도 */
+.mapbox { margin-top: 18px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+#map { height: 380px; width: 100%; background: #e8ece9; }
+.maplegend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 8px 12px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
+.maplegend i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -2px; margin-right: 4px; }
+.pin { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 700 12px/1 var(--body); box-shadow: 0 1px 3px rgba(0,0,0,.35); border: 2px solid #0d7356; background: #fff; color: #0d7356; }
+.pin.top { background: #0d7356; color: #fff; }
+.pin.mixed { border-color: #8a958f; color: #5c6b64; }
+.pin.home { width: 34px; height: 34px; background: #f3b33d; border-color: #2a1f05; color: #2a1f05; font-size: 11px; }
+.leaflet-popup-content { font-family: var(--body); font-size: 13px; line-height: 1.5; margin: 10px 12px; }
+.leaflet-popup-content b { font-size: 14px; }
+.leaflet-popup-content a { color: #0d7356; font-weight: 700; }
+.leaflet-div-icon { background: transparent; border: 0; }
+.onmap { justify-self: start; font: inherit; font-size: 13px; font-weight: 700; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+.links { display: flex; gap: 14px; flex-wrap: wrap; }
+
 footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
 @media (prefers-reduced-motion: no-preference) { .card { transition: box-shadow .2s, border-color .2s; } }
 </style>
@@ -122,6 +139,10 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
 </div>
 
 <main class="wrap">
+  <div class="mapbox">
+    <div id="map" role="region" aria-label="맛집 위치 지도"></div>
+    <div class="maplegend"><span><i style="background:#f3b33d;border:2px solid #2a1f05"></i>어전트의원</span><span><i style="background:#0d7356"></i>강추</span><span><i style="background:#fff;border:2px solid #0d7356"></i>추천</span><span><i style="background:#fff;border:2px solid #8a958f"></i>기타</span><span>핀 번호 = 목록 번호</span></div>
+  </div>
   <div class="pick">
     <p>메뉴가 고민될 땐 <strong id="pickName">한 곳 골라 드릴게요</strong></p>
     <button class="btn" id="pickBtn" type="button">오늘 뭐 먹지?</button>
@@ -130,6 +151,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
   <footer>번호는 인쇄용 안내지와 같아요. 브레이크타임 시간과 휴무일은 지도 링크에서 확인해 주세요.</footer>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="data.js"></script>
 <script>
 (function () {
@@ -215,14 +237,57 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
         var fs = window.featuresOf(p);
         if (fs.length) body.appendChild(el("p", "feats", fs.join(" · ")));
         if (p.memo) body.appendChild(el("p", "memo", p.memo));
+        var links = el("div", "links");
+        if (p.lat && window.L) {
+          var mb = el("button", "onmap", "지도에서 위치 보기"); mb.type = "button";
+          mb.addEventListener("click", function () { showOnMap(p.no); });
+          links.appendChild(mb);
+        }
         var a = el("a", "map", "네이버지도에서 보기 ›"); a.href = window.mapLink(p); a.target = "_blank"; a.rel = "noopener";
-        body.appendChild(a);
+        links.appendChild(a);
+        body.appendChild(links);
         card.appendChild(body); list.appendChild(card);
       });
       sec.appendChild(list); root.appendChild(sec);
     });
     if (!any) root.appendChild(el("p", "memo", "조건에 맞는 식당이 없어요. 위에서 다른 종류나 평가를 골라 보세요."));
+    updateMarkers();
   }
+
+  // ---- 지도 ----
+  var map = null, layer = null, markers = {};
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function initMap() {
+    if (!window.L) { document.getElementById("map").textContent = "지도를 불러오지 못했어요. 아래 목록의 네이버지도 링크를 이용해 주세요."; return; }
+    map = L.map("map", { scrollWheelZoom: false, tap: true }).setView([C.lat, C.lng], 16);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "&copy; OpenStreetMap" }).addTo(map);
+    L.marker([C.lat, C.lng], { icon: L.divIcon({ className: "", html: '<div class="pin home">의원</div>', iconSize: [34, 34], iconAnchor: [17, 17] }), zIndexOffset: 1000 })
+      .addTo(map).bindPopup("<b>어전트의원</b><br>" + esc(C.address));
+    layer = L.layerGroup().addTo(map);
+  }
+  function updateMarkers() {
+    if (!map) return;
+    layer.clearLayers(); markers = {};
+    var pts = [[C.lat, C.lng]];
+    P.filter(match).forEach(function (p) {
+      if (!p.lat) return;
+      var lv = window.levelOf(p);
+      var cls = "pin" + (lv === "강추" ? " top" : lv === "추천" ? "" : " mixed");
+      var m = L.marker([p.lat, p.lng], { icon: L.divIcon({ className: "", html: '<div class="' + cls + '">' + p.no + "</div>", iconSize: [26, 26], iconAnchor: [13, 13] }) });
+      var html = "<b>" + p.no + ". " + esc(p.name) + "</b>" + (lv ? " · " + lv : "") + "<br>" + esc(p.cat) +
+        (p.memo ? "<br>" + esc(p.memo) : "") +
+        '<br><a href="' + window.mapLink(p) + '" target="_blank" rel="noopener">네이버지도 ›</a> &nbsp; <a href="#p' + p.no + '">목록에서 보기</a>';
+      m.bindPopup(html, { maxWidth: 260 });
+      m.addTo(layer); markers[p.no] = m; pts.push([p.lat, p.lng]);
+    });
+    if (pts.length > 1) map.fitBounds(pts, { padding: [24, 24], maxZoom: 17 });
+  }
+  function showOnMap(no) {
+    var m = markers[no]; if (!m) return;
+    document.querySelector(".mapbox").scrollIntoView({ behavior: "smooth", block: "start" });
+    map.setView(m.getLatLng(), 18); m.openPopup();
+  }
+  initMap();
 
   document.getElementById("pickBtn").addEventListener("click", function () {
     var pool = P.filter(match);
