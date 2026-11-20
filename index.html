@@ -152,7 +152,8 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="data.js"></script>
+<!-- data.js를 고치면 아래 v= 숫자도 바꿔 주세요 (예전 파일이 보이는 것을 막아요) -->
+<script src="data.js?v=3"></script>
 <script>
 (function () {
   var C = window.CLINIC, G = window.GROUPS, P = window.PLACES;
@@ -259,6 +260,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function initMap() {
     if (!window.L) { document.getElementById("map").textContent = "지도를 불러오지 못했어요. 아래 목록의 네이버지도 링크를 이용해 주세요."; return; }
+    if (!C.lat) { C.lat = 37.52426; C.lng = 126.90648; }
     map = L.map("map", { scrollWheelZoom: false, tap: true }).setView([C.lat, C.lng], 16);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "&copy; OpenStreetMap" }).addTo(map);
     L.marker([C.lat, C.lng], { icon: L.divIcon({ className: "", html: '<div class="pin home">의원</div>', iconSize: [34, 34], iconAnchor: [17, 17] }), zIndexOffset: 1000 })

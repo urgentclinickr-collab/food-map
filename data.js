@@ -43,7 +43,7 @@ window.PLACES = [
   { name: "동순각",           group: "mid",  cat: "중식",     meal: "both",  bt: false, tags: ["추천", "가성비"], menu: ["케찹탕수육", "삼선간짜장"], memo: "역사 깊은 중식당. 옛날식 케찹탕수육과 삼선간짜장 추천", query: "동순각 영등포", lat: 37.52073, lng: 126.90870 },
   { name: "예산소머리국밥",   group: "mid",  cat: "한식",     meal: "both",  bt: false, tags: ["강추", "푸짐해요", "가성비"], menu: ["소머리국밥"], memo: "영등포 시장 안, 전국구 급 소머리 국밥 맛집 (순대국밥은 비추) !!트리플 강추!!", query: "예산가마솥국밥 영등포", lat: 37.51990, lng: 126.90742 },
   { name: "영등포아바이순대", group: "mid",  cat: "한식",     meal: "both",  bt: false, tags: ["강추", "푸짐해요", "가성비"], menu: ["정식"], memo: "영등포시장 안, 정식으로 드세요!", query: "영등포아바이순대", lat: 37.51985, lng: 126.90762 },
-  { name: "신촌 신쭈꾸미",    group: "mid",  franchise: true, cat: "한식", meal: "both", bt: false, tags: ["추천", "푸짐해요", "가성비"], menu: ["쭈꾸미정식", "쭈불정식", "제육"], memo: "체인이지만 불 향 강한 쭈꾸미와 다양한 반찬. 반찬, 계란후라이 셀프바.", query: "산촌신쭈꾸미 영등포점", lat: 37.52050, lng: 126.90275 },
+  { name: "산촌신쭈꾸미",     group: "mid",  franchise: true, cat: "한식", meal: "both", bt: false, tags: ["추천", "푸짐해요", "가성비"], menu: ["쭈꾸미정식", "쭈불정식", "제육"], memo: "체인이지만 불 향 강한 쭈꾸미와 다양한 반찬. 반찬, 계란후라이 셀프바.", query: "산촌신쭈꾸미 영등포점", lat: 37.52050, lng: 126.90275 },
   { name: "서민준 밀밭",      group: "mid",  cat: "한식",     meal: "both",  bt: false, tags: ["추천", "정갈해요"], menu: ["바지락칼국수", "보리비빔밥"], memo: "바지락 칼국수와 늘 함께 주는 보리 비빔밥 맛집", query: "서민준밀밭 영등포", lat: 37.52012, lng: 126.90278 },
   { name: "송죽장",           group: "far",  cat: "중식",     meal: "both",  bt: false, tags: ["강추"], menu: ["어향가지", "삼선짬뽕"], memo: "역사 깊은 화교 중식당. 어향가지, 삼선짬뽕 추천", query: "송죽장 영등포", lat: 37.51825, lng: 126.90470 }
 ];
