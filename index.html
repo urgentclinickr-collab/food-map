@@ -82,6 +82,7 @@ section { margin-top: 26px; }
 .meal { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 1px 7px; background: var(--accent-soft); color: var(--accent); }
 .meal-dinner { background: var(--fg); color: var(--bg); }
 .meal-lunch { background: var(--yolk); color: #2a1f05; }
+.pr { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 1px 7px; background: var(--yolk-soft); color: var(--fg); }
 .fr { font-size: 12px; color: var(--muted); margin-left: -4px; }
 .lv { font-size: 12px; font-weight: 700; border-radius: 4px; padding: 1px 8px; }
 .lv-top { background: var(--accent); color: var(--surface); }
@@ -157,15 +158,16 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <!-- data.js를 고치면 아래 v= 숫자도 바꿔 주세요 (예전 파일이 보이는 것을 막아요) -->
-<script src="data.js?v=5"></script>
+<script src="data.js?v=6"></script>
 <script>
 (function () {
   var C = window.CLINIC, G = window.GROUPS, P = window.PLACES;
   var state = { cat: "전체", feat: "" };
-  var FEATS = [["", "평가 전체"], ["강추", "강추만"], ["가성비", "가성비"], ["푸짐해요", "푸짐해요"], ["정갈해요", "정갈해요"]];
+  var FEATS = [["", "평가 전체"], ["강추", "강추만"], ["가성비", "가성비"], ["푸짐해요", "푸짐해요"], ["정갈해요", "정갈해요"], ["price:p1", "1만원 이하"]];
   function match(p) {
     if (state.cat !== "전체" && p.cat !== state.cat) return false;
-    if (state.feat && (p.tags || []).indexOf(state.feat) < 0) return false;
+    if (state.feat.indexOf("price:") === 0) { if (p.price !== state.feat.slice(6)) return false; }
+    else if (state.feat && (p.tags || []).indexOf(state.feat) < 0) return false;
     return true;
   }
   try { var saved = localStorage.getItem("cat"); if (saved) state.cat = saved; } catch (e) {}
@@ -231,6 +233,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
         var lv = window.levelOf(p);
         if (lv) top.appendChild(el("span", "lv " + (lv === "강추" ? "lv-top" : lv === "추천" ? "lv-rec" : "lv-mixed"), lv));
         top.appendChild(el("span", "cat", p.cat));
+        if (p.price && window.PRICE_LABEL) top.appendChild(el("span", "pr", window.PRICE_LABEL[p.price]));
         if (p.meal && window.MEAL_LABEL[p.meal]) top.appendChild(el("span", "meal meal-" + p.meal, window.MEAL_LABEL[p.meal]));
         if (p.bt === true) top.appendChild(el("span", "bt", "브레이크타임 있음"));
         body.appendChild(top);
@@ -280,7 +283,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 32px 40px; }
       var lv = window.levelOf(p);
       var cls = "pin" + (lv === "강추" ? " top" : lv === "추천" ? "" : " mixed");
       var m = L.marker([p.lat, p.lng], { icon: L.divIcon({ className: "", html: '<div class="' + cls + '">' + p.no + "</div>", iconSize: [26, 26], iconAnchor: [13, 13] }) });
-      var html = "<b>" + p.no + ". " + esc(p.name) + "</b>" + (lv ? " · " + lv : "") + "<br>" + esc(p.cat) +
+      var html = "<b>" + p.no + ". " + esc(p.name) + "</b>" + (lv ? " · " + lv : "") + "<br>" + esc(p.cat) + (p.price && window.PRICE_LABEL ? " · " + window.PRICE_LABEL[p.price] : "") +
         (p.memo ? "<br>" + esc(p.memo) : "") +
         '<br><a href="' + window.mapLink(p) + '" target="_blank" rel="noopener">네이버지도 ›</a> &nbsp; <a href="#p' + p.no + '">목록에서 보기</a>';
       m.bindPopup(html, { maxWidth: 260 });

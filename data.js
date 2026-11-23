@@ -49,6 +49,17 @@ window.PLACES = [
 ];
 window.PLACES.forEach(function (p, i) { p.no = i + 1; });
 
+// 가격대 (1인 기준): p1 1만원 이하 / p2 1~1.5만원 / p3 1.5~2만원 / p4 2만원 이상
+window.PRICE_LABEL = { p1: "1만원 이하", p2: "1~1.5만원", p3: "1.5~2만원", p4: "2만원 이상" };
+window.PRICES = {
+  "어메이징키친": "p1", "팡앤팡": "p1", "일출옥": "p2", "구름추어탕": "p2", "김재운초밥사랑": "p2",
+  "돼슐랭": "p2", "호미가": "p2", "고향엄마손생바지락칼국수": "p2", "란궁마라": "p2", "영등포장어": "p4",
+  "본죽 / 도시락": "p2", "희락돈까스": "p1", "문래돼지불백": "p2", "목포식당": "p2", "스마일 꽈배기": "p1",
+  "빨호 떡볶이": "p1", "예가원 한정식": "p3", "동순각": "p1", "예산소머리국밥": "p2", "영등포아바이순대": "p2",
+  "산촌신쭈꾸미": "p2", "서민준 밀밭": "p2", "송죽장": "p2"
+};
+window.PLACES.forEach(function (p) { if (!p.price && window.PRICES[p.name]) p.price = window.PRICES[p.name]; });
+
 window.MEAL_LABEL = { lunch: "점심만", dinner: "저녁만", both: "점심·저녁" };
 window.LEVELS = ["강추", "추천", "호불호"];
 window.levelOf = function (p) { var t = p.tags || []; for (var i = 0; i < window.LEVELS.length; i++) if (t.indexOf(window.LEVELS[i]) >= 0) return window.LEVELS[i]; return ""; };
